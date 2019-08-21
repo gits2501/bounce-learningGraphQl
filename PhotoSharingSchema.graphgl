@@ -91,6 +91,10 @@ type Query {                     # ROOT type. Common place for one-to-many conne
    allPhotos: [Photo!]!          # bring all Photos
    totalUsers: Int!         
    allUsers: [User!]!
+
+   User(githubLogin: ID!): User! # Define arguments so we can query single User by githubLogin ID
+   Photo(id: ID!): Photo!        # Same with photos
+
 }
 schema {
    query: Query                  # Adding the query type to Schema - which makes it avalable as GraphQL API
@@ -98,7 +102,7 @@ schema {
 
 ########################################################################################################
 
-# queryes   
+# EXAMPLE queries for above schema  
 
 query photos {                  # Example query for API defined in root Query type
     totalPhotos
@@ -135,4 +139,19 @@ query groups2 {           # Example query for api that return list of more the o
     ...on DesignGroup{
          topic
     }
+}
+
+query {                 # Example of using arguments in queries
+   User(githubLogin: "gits2501") {
+        name
+        avatar
+   }
+}
+
+query {
+   Photo(id: "14TH5B6NS4KIG3H4S") {
+       name
+       description
+       url
+   }
 }
