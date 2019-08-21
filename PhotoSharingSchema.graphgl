@@ -90,7 +90,7 @@ type Query {                     # ROOT type. Common place for one-to-many conne
    totalPhotos: Int!             # bring number of Photos 
    allPhotos: [Photo!]!          # bring all Photos
    totalUsers: Int!         
-   allUsers: [User!]!
+   allUsers(category: PhotoCategory): [User!]!  # Optional non-nullable argument. Used to filter data. When no argument assume non filtered list 
 
    User(githubLogin: ID!): User! # Define arguments so we can query single User by githubLogin ID
    Photo(id: ID!): Photo!        # Same with photos
@@ -153,5 +153,13 @@ query {
        name
        description
        url
+   }
+}
+
+query {
+   allPhotos(category: "LANDSCAPE") {  # Return filtered list of photos that mach category "LANDSCAPE"
+      name
+      description
+      url
    }
 }
