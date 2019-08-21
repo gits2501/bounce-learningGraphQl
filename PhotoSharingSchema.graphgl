@@ -1,0 +1,50 @@
+enum PhotoCategory {
+  SELFIE
+  PORTRAIT
+  ACTION
+  LANDSCAPE
+  GRAPHIC
+}
+
+type User {                      # CUSTOM type              
+  githubLogin: ID!
+  name: String
+  avatar: String
+  postedPhotos: [Photo!]!        # one-to-many connection to the Photo type object
+  inPhotos: [Photo!]!            # one-to-many. Makes one side of the many-to-many connection(relationship). See 'taggedUsers' in Photo type
+}
+
+type Photo {               
+   id: ID!
+   name: String!
+   url: String!
+   description: String
+   created: DateTime!
+   category: PhotoCategory!
+   postedBy: User!               # one-to-one connection to the User type object
+   taggedUsers: [User!]!         # one-to-many. Makes other side of the many-to-many connnection. See 'inPhotos' in User type
+}
+
+type Query {                     # ROOT type common place for one-to-many connections to the CUSTOM types
+   totalPhotos: Int!             # bring number of Photos 
+   allPhotos: [Photo!]!          # bring all Photos
+   totalUsers: Int!         
+   allUsers: [User!]!
+}
+schema {
+   query: Query                  # Adding the query type to Schema - which makes it avalable as GraphQL API
+}
+
+########################################################################################################
+
+# queryes   
+
+query photos {
+    totalPhotos
+    allPhotos{
+        name
+        url
+
+    }
+
+}
