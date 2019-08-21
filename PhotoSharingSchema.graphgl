@@ -96,15 +96,15 @@ type Query {                     # ROOT type. Common place for one-to-many conne
    Photo(id: ID!): Photo!        # Same with photos
 }
 
-type Mutation {                  # Mutation that will create a photo with provided arguments
-   postPhoto(
-      name: String!
-      description: String
-      category: PhotoCategory=PORTRAIT
-   ): Photo!
+input PostPhotoInput {
+   name: String!
+   description: String
+   category: PhotoCategory=PORTRAIT
 }
 
-
+type Mutation {                  # Mutation that will create a photo with provided arguments
+  postPhoto(input: PostPhotoInput!): Photo!
+}
 
 schema {
    query: Query                  # Adding the query type to Schema - which makes it avalable as GraphQL API
@@ -201,4 +201,12 @@ mutation postPhoto(                # Make mutation reusable with mutaion variabl
           name
           email
        }
+}
+
+mutation newPhoto($input: PostPhotoInput!) {  # orginizing miltiple mutatuon arguments to Input type
+    postPhoto(input: $input) {
+        id
+        url
+        created
+    }
 }
