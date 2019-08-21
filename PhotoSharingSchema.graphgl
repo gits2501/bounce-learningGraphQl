@@ -186,3 +186,19 @@ mutation {                            # Example of mutation that will create a p
        }
    }
 }
+
+mutation postPhoto(                # Make mutation reusable with mutaion variables
+    $name: String!
+    $description: String
+    $category: PhotoCategory
+) {
+    postPhoto(
+       name: $name
+       description: $description
+       category: $category
+    ) {                          # on success assume it will return fields in selection set (id, name, email)
+           id
+          name
+          email
+       }
+}
