@@ -114,10 +114,16 @@ type Mutation
 
 
 
+type Subscription {
+   newPhoto(category: PhotoCategory): Photo!  # listen for new photo creation, optionaly subscribe for Photos on given category
+   newUser: User!
+}
+
 
 schema {
    query: Query                  # Adding the query type to Schema - which makes it avalable as GraphQL API
    mutation: Mutation
+   subscription: Subscription
 }
 
 ########################################################################################################
@@ -212,10 +218,21 @@ mutation postPhoto(                # Make mutation reusable with mutaion variabl
        }
 }
 
-mutation newPhoto($input: PostPhotoInput!) {  # orginizing miltiple mutatuon arguments to Input type
+mutation newPhoto($input: PostPhotoInput!) {  # organizing miltiple mutation arguments to Input type
     postPhoto(input: $input) {
         id
         url
         created
     }
+}
+
+subscription {                   # Example subscription for new(post)Photo mutations only for photos with cat = ACTION
+   newPhoto(category: "ACTION") {
+        id
+        name
+        url
+        postedBy {
+           name
+        }
+   }
 }
