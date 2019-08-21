@@ -19,14 +19,62 @@ type User {                      # CUSTOM type
 }
 
 type Friendship {                
-  friends: [User!]!
+  friend: User!
   howLong: Int!
   whereWeMet: Location
 }
 
 type Location {
-   name: String!
+    name: String!
 }
+
+union AgendaItem = DevGroup | AdminGroup   # Define UNION type so list can have objects of more then one type
+  
+type DevGroup {
+      name: String!
+      department: String!
+      assigned: [User!]!
+}
+
+type StudentGroup {
+   name: String!
+   tasks: String!
+}
+
+type Query {                     # Add agenda so we can query it 
+  agenda: [AgendaItem!]!
+}
+
+interface AgendaItem2{          # Interface for fields that types need to implement
+
+    name: String!
+    start: DateTime!
+    end: DateTime!
+    members:[User!]!
+}
+
+type QAGroup implements AgendaItem2{
+    name: String!
+    start: DateTime!
+    end: DateTime!
+
+    members: [User!]!
+}
+
+type DesignGroup implements AgendaItem2{
+    name: String!
+    start: DateTime!
+    end: DateTime!
+    members:[User!]!
+
+    topic: String!
+
+}
+
+type Query {                      # Add api tha returns list where objects different types (Implemented with Interface)
+    aggenda2: [AgendaItem2!]!
+}
+
 type Photo {               
    id: ID!
    name: String!
@@ -60,4 +108,31 @@ query photos {                  # Example query for API defined in root Query ty
 
     }
 
+}
+
+query groups {                 # Example query for api that return list of more the one object types (implemented with UNION)
+   agenda {
+      ...on StudentGroup {
+            name
+            tasks
+      }
+      ...on StudyGroup {
+            name
+            department
+            assigned{
+                id
+                name
+            }
+      }
+   }
+}
+query groups2 {           # Example query for api that return list of more the one object types (implemented with Interface)
+
+    name: String!
+    start: DateTime!
+    end: DateTime!
+    members:[User!]!
+    ...on DesignGroup{
+         topic
+    }
 }
