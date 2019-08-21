@@ -1,4 +1,4 @@
-enum PhotoCategory {
+enum PhotoCategory { 
   SELFIE
   PORTRAIT
   ACTION
@@ -10,8 +10,11 @@ type User {                      # CUSTOM type
   githubLogin: ID!
   name: String
   avatar: String
+
   postedPhotos: [Photo!]!        # one-to-many connection to the Photo type object
   inPhotos: [Photo!]!            # one-to-many. Makes one side of the many-to-many connection(relationship). See 'taggedUsers' in Photo type
+
+  friends: [User!]!              # one-to-many. Connection that models both sides of the many-to-many friends concept.      
 }
 
 type Photo {               
@@ -25,7 +28,7 @@ type Photo {
    taggedUsers: [User!]!         # one-to-many. Makes other side of the many-to-many connnection. See 'inPhotos' in User type
 }
 
-type Query {                     # ROOT type common place for one-to-many connections to the CUSTOM types
+type Query {                     # ROOT type. Common place for one-to-many connections to the CUSTOM types. In query we define out GraphQL API's
    totalPhotos: Int!             # bring number of Photos 
    allPhotos: [Photo!]!          # bring all Photos
    totalUsers: Int!         
@@ -39,10 +42,10 @@ schema {
 
 # queryes   
 
-query photos {
+query photos {                  # Example query for API defined in root Query type
     totalPhotos
     allPhotos{
-        name
+        name                    
         url
 
     }
