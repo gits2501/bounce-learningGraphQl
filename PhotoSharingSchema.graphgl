@@ -102,9 +102,18 @@ input PostPhotoInput {
    category: PhotoCategory=PORTRAIT
 }
 
-type Mutation {                  # Mutation that will create a photo with provided arguments
-  postPhoto(input: PostPhotoInput!): Photo!
+type  AuthPayload {              # Define return type that besides User object return also metadata like "token"
+    user: User!
+    token: String!
 }
+
+type Mutation 
+  postPhoto(input: PostPhotoInput!): Photo!   # Mutation that will create a photo with provided arguments
+  githubAuth(code: String!): AuthPayload!     # Will sign in user with provided github code and return payload(user) and metadata (token)
+} 
+
+
+
 
 schema {
    query: Query                  # Adding the query type to Schema - which makes it avalable as GraphQL API
