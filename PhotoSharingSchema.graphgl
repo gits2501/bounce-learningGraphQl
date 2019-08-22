@@ -6,12 +6,24 @@ enum PhotoCategory {
   GRAPHIC
 }
 
-type User {                      # CUSTOM type              
+type User {                      # CUSTOM type         
+  """
+  The user's unique GitHub login
+  """    
   githubLogin: ID!
   name: String
-  avatar: String
 
+  """
+  A url for the user's GitHub profile photo
+  """
+  avatar: String
+  """
+  All of the photos posted by this user
+  """
   postedPhotos: [Photo!]!        # one-to-many connection to the Photo type object
+  """
+  All of the photos in which this user appears
+  """
   inPhotos: [Photo!]!            # one-to-many. Makes one side of the many-to-many connection(relationship). See 'taggedUsers' in Photo type
 
   # friends: [User!]!            # one-to-many. Connection that models both sides of the many-to-many friends concept.
@@ -96,6 +108,9 @@ type Query {                     # ROOT type. Common place for one-to-many conne
    Photo(id: ID!): Photo!        # Same with photos
 }
 
+"""
+The inputs sent with the postPhoto Mutation
+"""
 input PostPhotoInput {
    name: String!
    description: String
@@ -109,7 +124,13 @@ type  AuthPayload {              # Define return type that besides User object r
 
 type Mutation 
   postPhoto(input: PostPhotoInput!): Photo!   # Mutation that will create a photo with provided arguments
-  githubAuth(code: String!): AuthPayload!     # Will sign in user with provided github code and return payload(user) and metadata (token)
+  """
+  Authorizes a GitHub User
+  """
+  githubAuth(
+     "The unique code from GitHub that is sent to authorize the user"
+     code: String!
+  ): AuthPayload!     # Will sign in user with provided github code and return payload(user) and metadata (token)
 } 
 
 
