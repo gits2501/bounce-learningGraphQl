@@ -126,7 +126,8 @@ type  AuthPayload {              # Define return type that besides User object r
 }
 
 type Mutation {
-  postPhoto(input: PostPhotoInput!): Photo!   # Mutation that will create a photo with provided arguments
+  #postPhoto(input: PostPhotoInput!): Photo!   # Mutation that will create a photo with provided arguments
+  postPhoto(name: String! description: String): Photo!
   """
   Authorizes a GitHub User
   """
