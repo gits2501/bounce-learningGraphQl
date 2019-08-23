@@ -19,7 +19,7 @@ const resolvers = {
 
          var newPhoto = {
              id: ++photoId_,          // simulate database id creation
-             ...args                  // pass other args sent by client
+             ...args.input            // pass other args sent by client , know in new property called input (see schema for this mutation)
          }
          
          photos.push(newPhoto)       
