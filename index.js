@@ -9,7 +9,8 @@ const resolvers = {
 
    Query: {
 
-      totalPhotos: () => photos.length
+      totalPhotos: () => photos.length,
+      allPhotos: () => photos
    },
 
    Mutation: {
@@ -23,15 +24,22 @@ const resolvers = {
          
          photos.push(newPhoto)       
          return newPhoto               // return value must mach type defined in the schema
-    }
-
+    },
+    
    },
 
    Subscription: {
 
    },
+  
+   Photo : {                          // Added the so colled Trivial Resolver function that gets each photo object as parent argument
 
-   DateTime: GraphQLDateTime     // resolver for custom type DateTime
+         url: (parent) => {
+            return `http://yoursite.com/img/${parent.id}.jpg`
+         } 
+   },
+
+   DateTime: GraphQLDateTime         // resolver for custom type DateTime
 }
 
 
